@@ -64,9 +64,11 @@ class OralCalculation:
         expression=""
         for i in range(self.num_expression):
             while expression=="" or expression in self.problems:
-                expression, result =self.generateIntegerExpression()                
-            self.problems.append(f"{i+1}、 {expression} ="  if self.showNo else expression)
+                expression, result =self.generateIntegerExpression()   
+            self.problems.append(expression)
             self.answers.append(result)  
+        if self.showNo:  
+            self.problems=[ f"{i}、 {s} =" for i, s in enumerate(self.problems, start=1)]
         return self.problems, self.answers
     def getproblems_answers(self):
         return self.problems, self.answers
@@ -114,7 +116,7 @@ def showproblems(colNum):
     ipage=(pSize+colNum-1)//colNum
     for i, problem in enumerate(problems):
         k=i//ipage
-        abox=cols[k].text_input(f"{i+1}、  {problem} =", value="",key=f"answer_input_{i}", placeholder="请输入答案...")    
+        abox=cols[k].text_input(f" {problem} ", value="",key=f"answer_input_{i}", placeholder="请输入答案...")    
         checkanswers.append(cols[k].empty())
         answerBox.append(abox)
         cols[k].write(' ')
@@ -152,15 +154,15 @@ if __name__ == "__main__":
         st.session_state['cralCalculation']=OralCalculation()
     cralCalculation=st.session_state['cralCalculation']
     with st.sidebar:
-        num_problems = st.slider("请选择题目数量（例如：20）", value=20,min_value=10, max_value=50,step=5) 
-        max_value = st.slider("请选择最大值（例如：10）", value=10,min_value=10, max_value=100,step=5) 
-        min_value = st.slider("请选择最小值（例如：1）", value=5,min_value=1, max_value=100,step=1)         
+        num_problems = st.slider("请选择题目数量（例如：20）", value=10,min_value=10, max_value=50,step=5) 
+        max_value = st.slider("请选择最大值（例如：10）", value=25,min_value=10, max_value=100,step=5) 
+        min_value = st.slider("请选择最小值（例如：1）", value=5,min_value=1, max_value=max_value-1,step=1)           
         show_cols = st.slider("请选择显示列数（例如：2）", value=3,min_value=1, max_value=5)  
         num_of_integer = st.slider("请选择运算项数（例如：2）", value=2,min_value=2, max_value=10) 
         cralCalculation.config(num_of_integer=num_of_integer,max_value=max_value,min_value=min_value,num_expression=num_problems)
-        cols = st.columns(4)
-        btn1=cols[1].button('生成')
-        btn2=cols[2].button('提交')
+        cols = st.columns(2)
+        btn1=cols[0].button('生成')
+        btn2=cols[1].button('提交')
     if btn1:  
         cralCalculation.generate_batch_problems()
         start_stopwatch()
