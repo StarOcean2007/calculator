@@ -24,13 +24,15 @@ class OralCalculation:
         if 'max_value' in kwargs:
             self.max_value=kwargs['max_value']  #最大整数
         if 'min_value' in kwargs:
-             self.min_value=kwargs['max_value']  #最小整数
+             self.min_value=kwargs['min_value']  #最小整数
         if 'num_of_integer' in kwargs:
             self.num_of_integer=kwargs['num_of_integer']  #整数数量
         if 'num_expression' in kwargs:
             self.num_expression=kwargs['num_expression']  #生成表达式数量
         if 'showNo' in kwargs:
             self.showNo=kwargs['showNo']  #显示题目序号
+        if self.min_value>=self.max_value:
+            raise ValueError("最小值应小于最大值！")    
     def getOperation(self):
         return ['+', '-', '*', '/'][random.randint(0, 1)]
         
@@ -72,7 +74,9 @@ class OralCalculation:
 def check_answers():
     cralCalculation=st.session_state['cralCalculation']
     problems,correct_answers=cralCalculation.getproblems_answers()
-
+    pSize=len(problems)
+    if pSize<1:
+        return
     score = 0
     start_time = time.time() 
  
