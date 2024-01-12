@@ -153,16 +153,20 @@ if __name__ == "__main__":
     if 'cralCalculation' not in st.session_state:
         st.session_state['cralCalculation']=OralCalculation()
     cralCalculation=st.session_state['cralCalculation']
-    with st.sidebar:
-        num_problems = st.slider("请选择题目数量（例如：20）", value=10,min_value=10, max_value=50,step=5) 
-        max_value = st.slider("请选择最大值（例如：10）", value=25,min_value=10, max_value=100,step=5) 
-        min_value = st.slider("请选择最小值（例如：1）", value=5,min_value=1, max_value=max_value-1,step=1)           
+    cols = st.columns(2)
+  #  with st.sidebar:
+    with cols[0]: 
+        num_problems = st.slider("请选择题目数量（例如：20）", value=10,min_value=10, max_value=50,step=5)          
         show_cols = st.slider("请选择显示列数（例如：2）", value=3,min_value=1, max_value=5)  
         num_of_integer = st.slider("请选择运算项数（例如：2）", value=2,min_value=2, max_value=10) 
-        cralCalculation.config(num_of_integer=num_of_integer,max_value=max_value,min_value=min_value,num_expression=num_problems)
-        cols = st.columns(2)
-        btn1=cols[0].button('生成')
-        btn2=cols[1].button('提交')
+    with cols[1]:
+        max_value = st.slider("请选择最大值（例如：10）", value=25,min_value=10, max_value=100,step=5) 
+        min_value = st.slider("请选择最小值（例如：1）", value=5,min_value=1, max_value=max_value-1,step=1)  
+        
+    cralCalculation.config(num_of_integer=num_of_integer,max_value=max_value,min_value=min_value,num_expression=num_problems)
+    cols = st.columns(3)
+    btn1=cols[0].button(':orange[生成口算]') #blue, green, orange, red, violet, gray/grey, rainbow
+    btn2=cols[1].button('提交',type= "primary")
     if btn1:  
         cralCalculation.generate_batch_problems()
         start_stopwatch()
